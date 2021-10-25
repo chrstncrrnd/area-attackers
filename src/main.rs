@@ -5,6 +5,7 @@ use macroquad::prelude::*;
 #[macroquad::main("BasicShapes")]
 async fn main() {
     let tank_texutre = load_texture("player_texture_default.png").await.unwrap();
+    tank_texutre.set_filter(FilterMode::Nearest);
     let mut tank = tank::Tank::new(tank_texutre);
     loop {
         clear_background(WHITE);

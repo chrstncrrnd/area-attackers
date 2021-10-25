@@ -3,8 +3,10 @@ use macroquad::prelude::*;
 
 ///# Tank struct
 /// The tank is what the player will be controlling
-/// pos: position
-/// speed: the tank speed
+/// pos: position,
+///
+/// speed: the tank speed,
+/// 
 /// sprite: the texture that will be rendered
 pub struct Tank{
     pub pos: Vec2,
@@ -27,6 +29,11 @@ impl Tank{
         }
     }
 
+    /// The render function
+    /// this renders the tank
+    /// also responsible for
+    /// handling logic and stuff
+    /// yeah
     pub fn render(&mut self){
         draw_texture_ex(
             self.sprite,
