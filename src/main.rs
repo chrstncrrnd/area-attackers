@@ -1,19 +1,21 @@
 mod tank;
+mod resources;
 
 use macroquad::prelude::*;
 
-#[macroquad::main("BasicShapes")]
+#[macroquad::main("Area Attackers")]
 async fn main() {
-    let tank_texutre = load_texture("player_texture_default.png").await.unwrap();
-    tank_texutre.set_filter(FilterMode::Nearest);
-    let mut tank = tank::Tank::new(tank_texutre);
+    println!("Loading game...");
+    //the loading stuff
+    let game_resources = resources::Resources::new().await.unwrap();
+
+    let mut tank = tank::Tank::new(game_resources.tank);
+    println!("Done loading!");
     loop {
         clear_background(WHITE);
 
-        draw_text("Wow very space invaders!", 100., 100., 100., BLACK);
-
         tank.render();
 
-        next_frame().await
+        next_frame().await;
     }
 }
