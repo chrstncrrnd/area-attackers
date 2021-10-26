@@ -1,4 +1,5 @@
 use macroquad::prelude::*;
+use crate::nodes::tank_projectile::TankProjectile;
 
 
 ///# Tank struct
@@ -12,7 +13,8 @@ pub struct Tank{
     pub pos: Vec2,
     pub speed: u8,
     pub sprite: Texture2D,
-    pub size: Vec2
+    pub size: Vec2,
+    projectile: TankProjectile
 }
 
 
@@ -20,12 +22,13 @@ impl Tank{
     /// New function to sort of standardise the way it will
     /// be initialised
     /// takes its sprite as an argument
-    pub fn new(sprite: Texture2D) -> Self{
+    pub fn new(sprite: Texture2D, projectile_sprite: Texture2D) -> Self{
         Self{
-            pos: Vec2::new(screen_width()/2., screen_height() - 300.),
+            pos: vec2(screen_width()/2., screen_height() - 300.),
             speed: 10,
             sprite,
-            size: Vec2::new(200., 120.)
+            size: vec2(200., 120.),
+            projectile: TankProjectile::new(projectile_sprite)
         }
     }
 
@@ -51,6 +54,14 @@ impl Tank{
             self.pos.x = screen_width() - self.size.x;
         }
 
+        //if the space key is pressed shoot the projectile
+        if is_key_released(KeyCode::Space){
+                                            //some stuff to make the projectile launch in the middle of the tank
+            self.projectile.shoot(vec2(self.pos.x + self.size.x/2., self.pos.y-10.))
+        }
+
+        //call the render function of the projectile
+        self.projectile.render();
 
         //draw the tank texture
         draw_texture_ex(
