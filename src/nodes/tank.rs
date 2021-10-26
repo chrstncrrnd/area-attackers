@@ -43,9 +43,8 @@ impl Tank{
         if is_key_down(KeyCode::D) || is_key_down(KeyCode::Right) {
             self.pos.x += self.speed as f32;
         }
-
-
-
+        //this might be exploitable
+        self.pos.y = screen_height() - (self.size.y + 10.);
         if self.pos.x < 0. {
             self.pos.x = 0.;
         }else if self.pos.x > screen_width() - self.size.x{

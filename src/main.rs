@@ -1,7 +1,10 @@
-mod tank;
 mod resources;
+mod nodes;
 
+
+use nodes::tank;
 use macroquad::prelude::*;
+use nodes::background;
 
 #[macroquad::main("Area Attackers")]
 async fn main() {
@@ -14,8 +17,8 @@ async fn main() {
     loop {
         clear_background(WHITE);
 
+        background::render();
         tank.render();
-
         next_frame().await;
     }
 }
