@@ -22,10 +22,10 @@ impl Tank{
     /// takes its sprite as an argument
     pub fn new(sprite: Texture2D) -> Self{
         Self{
-            pos: Vec2::new(0.,0.),
+            pos: Vec2::new(screen_width()/2., screen_height() - 300.),
             speed: 10,
             sprite,
-            size: Vec2::new(100., 100.)
+            size: Vec2::new(200., 120.)
         }
     }
 
@@ -35,6 +35,25 @@ impl Tank{
     /// handling logic and stuff
     /// yeah
     pub fn render(&mut self){
+        //movement code
+        // TODO: smooth movement
+        if is_key_down(KeyCode::A) || is_key_down(KeyCode::Left) {
+            self.pos.x -= self.speed as f32;
+        }
+        if is_key_down(KeyCode::D) || is_key_down(KeyCode::Right) {
+            self.pos.x += self.speed as f32;
+        }
+
+
+
+        if self.pos.x < 0. {
+            self.pos.x = 0.;
+        }else if self.pos.x > screen_width() - self.size.x{
+            self.pos.x = screen_width() - self.size.x;
+        }
+
+
+        //draw the tank texture
         draw_texture_ex(
             self.sprite,
             self.pos.x,
