@@ -11,7 +11,7 @@ use crate::nodes::tank_projectile::TankProjectile;
 /// sprite: the texture that will be rendered
 pub struct Tank{
     pub pos: Vec2,
-    pub speed: u8,
+    pub speed: u16,
     pub sprite: Texture2D,
     pub size: Vec2,
     projectile: TankProjectile
@@ -25,7 +25,7 @@ impl Tank{
     pub fn new(sprite: Texture2D, projectile_sprite: Texture2D) -> Self{
         Self{
             pos: vec2(screen_width()/2., screen_height() - 300.),
-            speed: 10,
+            speed: 1000,
             sprite,
             size: vec2(200., 120.),
             projectile: TankProjectile::new(projectile_sprite)
@@ -41,10 +41,10 @@ impl Tank{
         //movement code
         // TODO: smooth movement
         if is_key_down(KeyCode::A) || is_key_down(KeyCode::Left) {
-            self.pos.x -= self.speed as f32;
+            self.pos.x -= self.speed as f32 * get_frame_time();
         }
         if is_key_down(KeyCode::D) || is_key_down(KeyCode::Right) {
-            self.pos.x += self.speed as f32;
+            self.pos.x += self.speed as f32 * get_frame_time();
         }
         //this might be exploitable
         self.pos.y = screen_height() - (self.size.y + 10.);
