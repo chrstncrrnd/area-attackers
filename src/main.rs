@@ -1,14 +1,12 @@
-mod resources;
 mod nodes;
+mod resources;
 
-
-use nodes::tank;
+use crate::nodes::enemies::Enemies;
 use macroquad::prelude::*;
 use nodes::background;
-use crate::nodes::enemies::Enemies;
+use nodes::tank;
 
-//window config does nothing more than it did now but
-//good to change it later
+//we do a little configuration
 fn window_config() -> Conf {
     Conf {
         window_title: String::from("Area Attackers"),
@@ -19,6 +17,7 @@ fn window_config() -> Conf {
     }
 }
 
+//main (very useful comment)
 #[macroquad::main(window_config)]
 async fn main() {
     println!("Loading game...");
@@ -27,12 +26,8 @@ async fn main() {
     //new tank
     let mut tank = tank::Tank::new(game_resources.tank, game_resources.tank_projectile);
 
-    let mut enemies = Enemies{
-        enemies: vec![],
-        enemy_texture: game_resources.enemy,
-    };
+    let mut enemies = Enemies::new(game_resources.enemy);
 
-    enemies.setup();
     println!("Done loading!");
     loop {
         //clear the background

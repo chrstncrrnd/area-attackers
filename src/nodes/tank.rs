@@ -25,9 +25,9 @@ impl Tank{
     pub fn new(sprite: Texture2D, projectile_sprite: Texture2D) -> Self{
         Self{
             pos: vec2(screen_width()/2., screen_height() - 300.),
-            speed: 1000,
+            speed: 400,
             sprite,
-            size: vec2(200., 120.),
+            size: vec2(150., 100.),
             projectile: TankProjectile::new(projectile_sprite)
         }
     }
