@@ -31,7 +31,7 @@ async fn main() {
     println!("Done loading!");
     loop {
         //clear the background
-        clear_background(Color::new(0.46, 0.46, 0.46, 1.));
+        clear_background(GRAY);
         //render the background
         background::render();
         //render the tank
