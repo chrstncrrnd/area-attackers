@@ -26,8 +26,7 @@ async fn main() {
     //new tank
     let mut tank = tank::Tank::new(game_resources.tank, game_resources.tank_projectile);
 
-    let mut enemies = Enemies::new(game_resources.enemy);
-
+    let mut enemies = Enemies::new(game_resources.enemy, game_resources.enemy_projectile);
     println!("Done loading!");
     loop {
         //clear the background

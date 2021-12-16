@@ -1,15 +1,14 @@
 //! # This is the resource file loading file
 //! yeah it loads resources from disk
 use macroquad::miniquad::FilterMode;
-use macroquad::prelude::{FileError, Font, load_texture, Texture2D};
+use macroquad::prelude::{load_texture, FileError, Font, Texture2D};
 use macroquad::text::load_ttf_font;
-
 
 /// # Resources struct
 /// this contains all of the game required resources.
 /// there arent many so its fine for now
 /// TODO: Add a texture atlas for more efficient loading
-pub struct Resources{
+pub struct Resources {
     pub enemy: Texture2D,
     pub enemy_projectile: Texture2D,
     pub tank: Texture2D,
@@ -18,7 +17,7 @@ pub struct Resources{
 }
 
 /// actual loader for the resources
-impl Resources{
+impl Resources {
     //new function, returns the resources or a file error if something goes wrong
     pub async fn new() -> Result<Resources, FileError> {
         println!("Starting resource loading");
@@ -48,15 +47,12 @@ impl Resources{
         println!("Finished loading resources");
         //if everything goes well return resources with all of the previous variables
         //returns it in the shorthand state
-        Ok(
-            Resources{
-                enemy,
-                enemy_projectile,
-                tank,
-                tank_projectile,
-                font
-            }
-        )
-
+        Ok(Resources {
+            enemy,
+            enemy_projectile,
+            tank,
+            tank_projectile,
+            font,
+        })
     }
 }

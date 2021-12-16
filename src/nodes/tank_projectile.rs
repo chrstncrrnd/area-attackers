@@ -8,13 +8,12 @@ pub struct TankProjectile {
     pub position: Vec2,
     pub texture: Texture2D,
     should_render: bool,
-
 }
 
 impl TankProjectile {
     /// create a new projectile with its texture as a parameter
-    pub fn new(texture: Texture2D) -> Self{
-        Self{
+    pub fn new(texture: Texture2D) -> Self {
+        Self {
             size: vec2(6.9, 20.),
             speed: 1000,
             position: vec2(0., 0.),
@@ -23,37 +22,33 @@ impl TankProjectile {
         }
     }
     // function to shoot
-    pub fn shoot(&mut self, position: Vec2){
+    pub fn shoot(&mut self, position: Vec2) {
         //make sure its not already shot
         if !self.should_render {
             self.should_render = true;
             //set its position to the one of the tank
             self.position = vec2(position.x - self.size.x, position.y);
         }
-        }
+    }
 
-    pub fn render(&mut self){
+    pub fn render(&mut self) {
         //should render is only true if the y position of the projectile is > 0
         self.should_render = self.position.y > 0.;
         if self.should_render {
             // move the projectile up (counterintuitively decrementing the value)
             //i need to add delta time
-            self.position.y -= self.speed  as f32 * get_frame_time();
+            self.position.y -= self.speed as f32 * get_frame_time();
             // render the texture for the projectile
             draw_texture_ex(
                 self.texture,
                 self.position.x,
                 self.position.y,
                 WHITE,
-                DrawTextureParams{
+                DrawTextureParams {
                     dest_size: Option::from(self.size),
                     ..Default::default()
-                }
+                },
             )
         }
-
     }
-
-
 }
-
