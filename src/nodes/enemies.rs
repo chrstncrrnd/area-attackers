@@ -1,8 +1,8 @@
-use crate::miniquad::Texture;
 use macroquad::color::WHITE;
 use macroquad::math::{vec2, Vec2};
 use macroquad::prelude::{draw_texture_ex, get_frame_time, DrawTextureParams, Texture2D};
 use macroquad::window::screen_width;
+use rand::prelude::ThreadRng;
 use rand::Rng;
 use crate::nodes::enemy_projectile::EnemyProjectile;
 
@@ -15,6 +15,7 @@ const ENEMIES_PER_LAYER: u8 = AMOUNT_OF_ENEMIES / LAYERS_OF_ENEMIES;
 //padding between enemies
 const PADDING_X: i32 = 90;
 const PADDING_Y: i32 = 100;
+
 
 /// #Enemies struct
 /// has a vector of Enemy for the enemies
@@ -44,12 +45,13 @@ impl Enemies {
     /// Function to call per frame
     pub fn render(&mut self) {
         let mut rng = rand::thread_rng();
-        rng.gen_range(0..AMOUNT_OF_ENEMIES);
-
+        let random_num = rng.gen_range(0..AMOUNT_OF_ENEMIES) as usize;
         //for each enemy just render
         for e in self.enemies.iter_mut() {
             e.render();
+            e.shoot();
         }
+        self.enemies[random_num].shoot();
     }
 }
 
@@ -85,6 +87,7 @@ impl Enemy {
         let distance_to_move_v = self.speed_ver as f32 * get_frame_time();
         self.position.x += distance_to_move_h;
         self.position.y += distance_to_move_v;
+        self.projectile.render();
         //draw the enemy
         draw_texture_ex(
             self.texture,
@@ -96,15 +99,11 @@ impl Enemy {
                 ..Default::default()
             },
         );
-
-
     }
-    fn shoot(){
-
+    pub fn shoot(&mut self){
+        self.projectile.shoot(self.position);
     }
 
-    /// Create a new enemy with only its index and its texture
-    /// this contains all of the setup code
     pub fn new(index: u8, texture: Texture2D, projectile_texture: Texture2D) -> Self {
         //this is a bit spaghetti will try to clean up but hopefully well commented
         //declare the size because we are going to need it later
