@@ -1,10 +1,10 @@
+use crate::nodes::enemy_projectile::EnemyProjectile;
 use macroquad::color::WHITE;
 use macroquad::math::{vec2, Vec2};
-use macroquad::prelude::{draw_texture_ex, get_frame_time, DrawTextureParams, Texture2D};
+use macroquad::prelude::{draw_texture_ex, get_frame_time, DrawTextureParams, Texture2D, is_key_pressed};
 use macroquad::window::screen_width;
-use rand::prelude::ThreadRng;
 use rand::Rng;
-use crate::nodes::enemy_projectile::EnemyProjectile;
+use crate::KeyCode;
 
 //amount of enemies
 const AMOUNT_OF_ENEMIES: u8 = 32;
@@ -15,7 +15,6 @@ const ENEMIES_PER_LAYER: u8 = AMOUNT_OF_ENEMIES / LAYERS_OF_ENEMIES;
 //padding between enemies
 const PADDING_X: i32 = 90;
 const PADDING_Y: i32 = 100;
-
 
 /// #Enemies struct
 /// has a vector of Enemy for the enemies
@@ -44,14 +43,10 @@ impl Enemies {
 
     /// Function to call per frame
     pub fn render(&mut self) {
-        let mut rng = rand::thread_rng();
-        let random_num = rng.gen_range(0..AMOUNT_OF_ENEMIES) as usize;
-        //for each enemy just render
         for e in self.enemies.iter_mut() {
             e.render();
-            e.shoot();
         }
-        self.enemies[random_num].shoot();
+        //for each enemy just render
     }
 }
 
@@ -66,6 +61,7 @@ pub struct Enemy {
     speed_ver: i16,
     start_pos: Vec2,
     projectile: EnemyProjectile,
+    frames_until_shoot: u16,
 }
 
 impl Enemy {
@@ -99,8 +95,18 @@ impl Enemy {
                 ..Default::default()
             },
         );
+
+        if is_key_pressed(KeyCode::B){
+            self.shoot();
+        }
+        if self.frames_until_shoot == 0{
+            self.shoot();
+            self.frames_until_shoot = rand::thread_rng().gen_range(1..1000);
+        }else{
+            self.frames_until_shoot -= 1;
+        }
     }
-    pub fn shoot(&mut self){
+    pub fn shoot(&mut self) {
         self.projectile.shoot(self.position);
     }
 
@@ -131,6 +137,7 @@ impl Enemy {
             speed_ver: 20,
             start_pos: position,
             projectile,
+            frames_until_shoot: rand::thread_rng().gen_range(0..1500),
         }
     }
 }
