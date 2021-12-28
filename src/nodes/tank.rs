@@ -9,11 +9,11 @@ use macroquad::prelude::*;
 ///
 /// sprite: the texture that will be rendered
 pub struct Tank {
-    pub pos: Vec2,
-    pub speed: u16,
-    pub sprite: Texture2D,
-    pub size: Vec2,
-    projectile: TankProjectile,
+    pub projectile: TankProjectile,
+    pos: Vec2,
+    speed: u16,
+    sprite: Texture2D,
+    size: Vec2,
 }
 
 impl Tank {

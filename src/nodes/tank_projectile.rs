@@ -4,9 +4,9 @@ use macroquad::prelude::*;
 /// this is the projectile that the tank will fire
 pub struct TankProjectile {
     pub size: Vec2,
-    pub speed: u16,
     pub position: Vec2,
-    pub texture: Texture2D,
+    speed: u16,
+    texture: Texture2D,
     should_render: bool,
 }
 
@@ -31,12 +31,16 @@ impl TankProjectile {
         }
     }
 
+    pub fn hit_an_enemy(&mut self) {
+        self.should_render = false;
+        self.position = vec2(0., 0.);
+    }
+
     pub fn render(&mut self) {
         //should render is only true if the y position of the projectile is > 0
         self.should_render = self.position.y > 0.;
         if self.should_render {
             // move the projectile up (counterintuitively decrementing the value)
-            //i need to add delta time
             self.position.y -= self.speed as f32 * get_frame_time();
             // render the texture for the projectile
             draw_texture_ex(
