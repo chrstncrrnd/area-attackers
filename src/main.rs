@@ -4,7 +4,6 @@ mod resources;
 use crate::nodes::enemies::{Enemies, Enemy};
 use crate::nodes::tank_projectile::TankProjectile;
 use macroquad::prelude::*;
-use nodes::background;
 use nodes::tank;
 
 //we do a little configuration
@@ -23,7 +22,7 @@ fn window_config() -> Conf {
 async fn main() {
     println!("Loading game...");
     //the loading stuff
-    let game_resources = resources::Resources::new().await.unwrap();
+    let game_resources = resources::Resources::load().await.unwrap();
     //new tank
     let mut tank = tank::Tank::new(game_resources.tank, game_resources.tank_projectile);
     //new enemies
@@ -33,7 +32,7 @@ async fn main() {
         //clear the background
         clear_background(GRAY);
         //render the background
-        background::render();
+        draw_texture(game_resources.background, 0.0, 0.0, WHITE);
         //render the tank
         tank.render();
         enemies.render();
