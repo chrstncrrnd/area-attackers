@@ -1,22 +1,22 @@
 use macroquad::color::WHITE;
-use macroquad::prelude::{
-    draw_texture_ex, screen_height, DrawTextureParams, Texture2D, Vec2,
-};
+use macroquad::prelude::{draw_texture_ex, DrawTextureParams, screen_height, Texture2D, Vec2};
 use macroquad::time::get_frame_time;
 
 use crate::vec2;
 
 pub struct EnemyProjectile {
+    pub position: Vec2,
+    pub size: Vec2,
     texture: Texture2D,
-    position: Vec2,
     shooting: bool,
 }
 
 impl EnemyProjectile {
     pub fn new(texture: Texture2D) -> Self {
         Self {
-            texture,
             position: vec2(0., 0.),
+            size: vec2(10.0, 20.0),
+            texture,
             shooting: false,
         }
     }
@@ -30,7 +30,7 @@ impl EnemyProjectile {
                 self.position.y,
                 WHITE,
                 DrawTextureParams {
-                    dest_size: Option::from(vec2(10.0, 20.0)),
+                    dest_size: Some(self.size),
                     ..Default::default()
                 },
             );
@@ -38,6 +38,11 @@ impl EnemyProjectile {
                 self.shooting = false;
             }
         }
+    }
+
+    pub fn retract_projectile(&mut self){
+        self.shooting = false;
+        self.position = vec2(0., 0.);
     }
 
     pub fn shoot(&mut self, position: Vec2) {

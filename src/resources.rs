@@ -1,7 +1,7 @@
 //! # This is the resource file loading file
 //! yeah it loads resources from disk
 use macroquad::miniquad::FilterMode;
-use macroquad::prelude::{load_texture, FileError, Font, Texture2D};
+use macroquad::prelude::{FileError, Font, load_texture, Texture2D};
 use macroquad::text::load_ttf_font;
 
 /// # Resources struct

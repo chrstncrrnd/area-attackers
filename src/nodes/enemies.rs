@@ -1,11 +1,10 @@
-use crate::nodes::enemy_projectile::EnemyProjectile;
 use macroquad::color::WHITE;
 use macroquad::math::{vec2, Vec2};
-use macroquad::prelude::{
-    draw_texture_ex, get_frame_time, DrawTextureParams, Texture2D,
-};
+use macroquad::prelude::{draw_texture_ex, DrawTextureParams, get_frame_time, Texture2D};
 use macroquad::window::screen_width;
 use rand::Rng;
+
+use crate::nodes::enemy_projectile::EnemyProjectile;
 
 //amount of enemies
 const AMOUNT_OF_ENEMIES: u8 = 32;
@@ -57,11 +56,11 @@ impl Enemies {
 pub struct Enemy {
     pub position: Vec2,
     pub size: Vec2,
+    pub projectile: EnemyProjectile,
     texture: Texture2D,
     speed_hor: i16,
     speed_ver: i16,
     start_pos: Vec2,
-    projectile: EnemyProjectile,
     frames_until_shoot: u16,
 }
 
@@ -98,7 +97,7 @@ impl Enemy {
         );
         if self.frames_until_shoot == 0 {
             self.shoot();
-            self.frames_until_shoot = rand::thread_rng().gen_range(1..1000);
+            self.frames_until_shoot = rand::thread_rng().gen_range(500..1000);
         } else {
             self.frames_until_shoot -= 1;
         }

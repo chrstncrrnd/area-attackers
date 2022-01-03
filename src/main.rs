@@ -1,10 +1,14 @@
-mod nodes;
-mod resources;
+use macroquad::prelude::*;
+
+use nodes::tank;
 
 use crate::nodes::enemies::{Enemies, Enemy};
+use crate::nodes::enemy_projectile::EnemyProjectile;
 use crate::nodes::tank_projectile::TankProjectile;
-use macroquad::prelude::*;
-use nodes::tank;
+use crate::tank::Tank;
+
+mod nodes;
+mod resources;
 
 //we do a little configuration
 fn window_config() -> Conf {
@@ -36,19 +40,34 @@ async fn main() {
         //render the tank
         tank.render();
         enemies.render();
+        // new scope to handle enemy death logic (yes i know that im only creating enemy_to_remove and
+        // its the only thing that will get dropped, the new scope is just here to organise a bit more idk
+        {
+            let mut enemy_to_remove: Option<usize> = None;
 
-        let mut enemy_to_remove: Option<usize> = None;
+            for (index, enemy) in enemies.enemies.iter_mut().enumerate() {
+                if enemy_tproj_overlap(enemy, &tank.projectile) {
+                    enemy_to_remove = Some(index);
+                    tank.projectile.hit_an_enemy();
+                }
+            }
 
-        for (index, enemy) in enemies.enemies.iter_mut().enumerate() {
-            if enemy_tproj_overlap(enemy, &tank.projectile) {
-                enemy_to_remove = Some(index);
-                tank.projectile.hit_an_enemy();
+            if let Some(e) = enemy_to_remove {
+                enemies.enemies.remove(e);
+            };
+        }
+        // another scope to see if the tank is hit by an enemy projectile
+        {
+            for enemy in enemies.enemies.iter_mut(){
+                let eproj = &mut enemy.projectile;
+
+                if tank_eproj_overlap(&tank, eproj){
+                    println!("Hit by an enemy projectile!");
+                    eproj.retract_projectile();
+                }
+
             }
         }
-
-        if let Some(e) = enemy_to_remove {
-            enemies.enemies.remove(e);
-        };
 
         // fps
         // draw_text(get_fps().to_string().as_str(), 10., 100., 100., WHITE);
@@ -58,6 +77,8 @@ async fn main() {
     }
 }
 
+
+//function to see if an enemy is hit by a tank projectile
 fn enemy_tproj_overlap(enemy: &Enemy, tproj: &TankProjectile) -> bool {
     overlaps(
         enemy.position,
@@ -69,6 +90,22 @@ fn enemy_tproj_overlap(enemy: &Enemy, tproj: &TankProjectile) -> bool {
         vec2(
             tproj.position.x + tproj.size.x,
             tproj.position.y - tproj.size.y,
+        ),
+    )
+}
+
+//function to see if the tank is hit by an enemy projectile
+fn tank_eproj_overlap(tank: &Tank, eproj: &EnemyProjectile) -> bool {
+    overlaps(
+        tank.pos,
+        vec2(
+            tank.pos.x + tank.size.x,
+            tank.pos.y - tank.size.y
+        ),
+        eproj.position,
+        vec2(
+            eproj.position.x + eproj.size.x,
+            eproj.position.y - eproj.size.y,
         ),
     )
 }

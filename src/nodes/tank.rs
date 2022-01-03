@@ -1,5 +1,6 @@
-use crate::nodes::tank_projectile::TankProjectile;
 use macroquad::prelude::*;
+
+use crate::nodes::tank_projectile::TankProjectile;
 
 ///# Tank struct
 /// The tank is what the player will be controlling
@@ -10,10 +11,10 @@ use macroquad::prelude::*;
 /// sprite: the texture that will be rendered
 pub struct Tank {
     pub projectile: TankProjectile,
-    pos: Vec2,
+    pub pos: Vec2,
+    pub size: Vec2,
     speed: u16,
     sprite: Texture2D,
-    size: Vec2,
 }
 
 impl Tank {
