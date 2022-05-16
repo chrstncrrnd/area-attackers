@@ -72,7 +72,7 @@ async fn main() {
         }
 
         // fps
-        // draw_text(get_fps().to_string().as_str(), 10., 100., 100., WHITE);
+        draw_text(get_fps().to_string().as_str(), 10., 100., 100., WHITE);
 
         //next frame
         next_frame().await;

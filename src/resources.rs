@@ -19,16 +19,19 @@ pub struct Resources {
 // Macro for DRY loading
 macro_rules! load {
     ($($var_name:ident),+) => {
+        // like a for loop for each of "parameters"
         $(
+            // get the string name of the inputted variable
             let var_name_str = stringify!($var_name);
+            // generate path
             let path = format!("assets/{}.png", var_name_str);
+            // create variable and set it to load texture of path
             let $var_name = macroquad::prelude::load_texture(path.as_str()).await.unwrap();
+            // set set filter
             $var_name.set_filter(macroquad::prelude::FilterMode::Nearest);
         )+
     };
 }
-
-
 
 
 /// actual loader for the resources
