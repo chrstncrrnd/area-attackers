@@ -7,9 +7,9 @@ use rand::Rng;
 use crate::nodes::enemy_projectile::EnemyProjectile;
 
 //amount of enemies
-pub const AMOUNT_OF_ENEMIES: u8 = 32;
+pub const AMOUNT_OF_ENEMIES: u8 = 16;
 //how many layers there will be of enemies
-const LAYERS_OF_ENEMIES: u8 = 4;
+const LAYERS_OF_ENEMIES: u8 = 2;
 //calculates how many enemies there are per layer
 const ENEMIES_PER_LAYER: u8 = AMOUNT_OF_ENEMIES / LAYERS_OF_ENEMIES;
 //padding between enemies
@@ -60,6 +60,12 @@ impl Enemies {
             e.render();
         }
         //for each enemy just render
+    }
+
+    pub fn retract_all_projectiles(&mut self){
+        for enemy in self.enemies.iter_mut(){
+            enemy.projectile.retract_projectile();
+        }
     }
 }
 

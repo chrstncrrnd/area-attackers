@@ -35,7 +35,7 @@ async fn main() {
     let mut enemies = Enemies::new(game_resources.enemy, game_resources.enemy_projectile);
 
     let mut player_lives: u8 = TOTAL_PLAYER_LIVES;
-    let mut points: u16 = 0;
+    let mut points: u8 = 0;
 
     println!("Done loading!");
     loop {
@@ -49,11 +49,20 @@ async fn main() {
             draw_centered_text("Press [space] to restart", 80., Some(vec2(0., 100.,)));
             
             if is_key_released(KeyCode::Space){
-                player_lives = 3;
+                player_lives = TOTAL_PLAYER_LIVES;
                 points = 0;
                 enemies.reset();
             }
 
+        }
+        else if points >= AMOUNT_OF_ENEMIES{
+            draw_centered_text("You won!", 100., Some(vec2(0., -100.)));
+            draw_centered_text(format!("Press [space] to restart").as_str(), 90., None);
+            if is_key_released(KeyCode::Space){
+                player_lives = TOTAL_PLAYER_LIVES;
+                points = 0;
+                enemies.reset();
+            }
         }
         // main game
         else{//clear the background
@@ -87,15 +96,19 @@ async fn main() {
             // another scope to see if the tank is hit by an enemy projectile
             // TANK DEATH
             {
+                let mut hit: bool = false;
                 for enemy in enemies.enemies.iter_mut(){
                     let eproj = &mut enemy.projectile;
     
                     if tank_eproj_overlap(&tank, eproj){
                         println!("Hit by an enemy projectile!");
-                        eproj.retract_projectile();
+                        hit = true;
                         player_lives -= 1;
                     }
-    
+                }
+
+                if hit{
+                    enemies.retract_all_projectiles();
                 }
             }
         }
