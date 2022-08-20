@@ -7,7 +7,7 @@ use rand::Rng;
 use crate::nodes::enemy_projectile::EnemyProjectile;
 
 //amount of enemies
-const AMOUNT_OF_ENEMIES: u8 = 32;
+pub const AMOUNT_OF_ENEMIES: u8 = 32;
 //how many layers there will be of enemies
 const LAYERS_OF_ENEMIES: u8 = 4;
 //calculates how many enemies there are per layer
@@ -23,6 +23,8 @@ const PADDING_Y: i32 = 100;
 /// for rendering
 pub struct Enemies {
     pub enemies: Vec<Enemy>,
+    enemy_texture: Texture2D,
+    enemy_projectile_texture: Texture2D,
 }
 
 impl Enemies {
@@ -38,7 +40,18 @@ impl Enemies {
             ))
         }
 
-        Self { enemies }
+        Self { enemies, enemy_texture, enemy_projectile_texture }
+    }
+
+    pub fn reset(&mut self){
+        self.enemies.clear();
+        for i in 0..AMOUNT_OF_ENEMIES{
+            self.enemies.push(Enemy::new(
+               i, 
+               self.enemy_texture.clone(), 
+               self.enemy_projectile_texture.clone()
+            ))
+        }
     }
 
     /// Function to call per frame
