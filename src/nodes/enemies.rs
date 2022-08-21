@@ -7,9 +7,9 @@ use rand::Rng;
 use crate::nodes::enemy_projectile::EnemyProjectile;
 
 //amount of enemies
-pub const AMOUNT_OF_ENEMIES: u8 = 16;
+pub const AMOUNT_OF_ENEMIES: u8 = 32;
 //how many layers there will be of enemies
-const LAYERS_OF_ENEMIES: u8 = 2;
+const LAYERS_OF_ENEMIES: u8 = 4;
 //calculates how many enemies there are per layer
 const ENEMIES_PER_LAYER: u8 = AMOUNT_OF_ENEMIES / LAYERS_OF_ENEMIES;
 //padding between enemies
@@ -148,8 +148,8 @@ impl Enemy {
             //the image size is: 120 x 217
             size,
             texture,
-            speed_hor: 50,
-            speed_ver: 20,
+            speed_hor: 40,
+            speed_ver: 15,
             start_pos: position,
             projectile,
             frames_until_shoot: rand::thread_rng().gen_range(0..1500),

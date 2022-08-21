@@ -4,6 +4,9 @@ use macroquad::time::get_frame_time;
 
 use crate::vec2;
 
+
+const SPEED: f32 = 700.;
+
 pub struct EnemyProjectile {
     pub position: Vec2,
     pub size: Vec2,
@@ -23,7 +26,7 @@ impl EnemyProjectile {
 
     pub fn render(&mut self) {
         if self.shooting {
-            self.position.y += 1000. * get_frame_time();
+            self.position.y += SPEED * get_frame_time();
             draw_texture_ex(
                 self.texture,
                 self.position.x,
