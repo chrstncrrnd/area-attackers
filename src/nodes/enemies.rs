@@ -7,7 +7,7 @@ use rand::Rng;
 use crate::nodes::enemy_projectile::EnemyProjectile;
 
 //amount of enemies
-const AMOUNT_OF_ENEMIES: u8 = 32;
+pub const AMOUNT_OF_ENEMIES: u8 = 32;
 //how many layers there will be of enemies
 const LAYERS_OF_ENEMIES: u8 = 4;
 //calculates how many enemies there are per layer
@@ -23,6 +23,8 @@ const PADDING_Y: i32 = 100;
 /// for rendering
 pub struct Enemies {
     pub enemies: Vec<Enemy>,
+    enemy_texture: Texture2D,
+    enemy_projectile_texture: Texture2D,
 }
 
 impl Enemies {
@@ -38,7 +40,18 @@ impl Enemies {
             ))
         }
 
-        Self { enemies }
+        Self { enemies, enemy_texture, enemy_projectile_texture }
+    }
+
+    pub fn reset(&mut self){
+        self.enemies.clear();
+        for i in 0..AMOUNT_OF_ENEMIES{
+            self.enemies.push(Enemy::new(
+               i, 
+               self.enemy_texture.clone(), 
+               self.enemy_projectile_texture.clone()
+            ))
+        }
     }
 
     /// Function to call per frame
@@ -47,6 +60,12 @@ impl Enemies {
             e.render();
         }
         //for each enemy just render
+    }
+
+    pub fn retract_all_projectiles(&mut self){
+        for enemy in self.enemies.iter_mut(){
+            enemy.projectile.retract_projectile();
+        }
     }
 }
 
@@ -129,8 +148,8 @@ impl Enemy {
             //the image size is: 120 x 217
             size,
             texture,
-            speed_hor: 50,
-            speed_ver: 20,
+            speed_hor: 40,
+            speed_ver: 15,
             start_pos: position,
             projectile,
             frames_until_shoot: rand::thread_rng().gen_range(0..1500),
