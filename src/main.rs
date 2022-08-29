@@ -101,7 +101,6 @@ async fn main() {
                     let eproj = &mut enemy.projectile;
     
                     if tank_eproj_overlap(&tank, eproj){
-                        println!("Hit by an enemy projectile!");
                         hit = true;
                         player_lives -= 1;
                     }
